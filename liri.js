@@ -1,5 +1,3 @@
-var keys = require('./keys.js');
-var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var fs = require('fs');
 var request = require('request');
@@ -14,12 +12,16 @@ var target = process.argv[3];
 //Twitter
 var twitterCall = function() {
 
+	var keys = require('./keys.js');
+
+	var Twitter = require('twitter');
+
 	var client = new Twitter(keys.twitterKeys);
 	 
 	var params = {screen_name: 'ac_cbc'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  if (!error) {
-	  	console.log("TWITTER CALL" + "\n-----------------------")
+	  	console.log("\n-----------------------" + "\nTWITTER CALL" + "\n-----------------------");
 	  	for (var i = 0; i < tweets.length; i++)
 	    {
 	    	if (i < 20) {
@@ -52,15 +54,18 @@ var spotifyCall = function() {
 	    	  }
 	 
 	// console.log(data); 
-	//Handle Data
         var albumTrack = data.tracks.items;
-		console.log("SPOTIFY CALL" + "\n----------------------")
+		console.log("\n-----------------------" + "\nSPOTIFY CALL" + "\n-----------------------");
+				// console.log(albumTrack.length);
+
         for (i=0; i < albumTrack.length; i++){
 
-        console.log("Artist: " + albumTrack[i].artists[i].name);
-        console.log("Album Title: " + albumTrack[i].album.name);
-        console.log("Spotify Link: " + albumTrack[i].preview_url);
-        console.log("Track Title: " + albumTrack[i].name);
+        	console.log("\n-----------------------");
+	        console.log(i+1);
+	        console.log("Artist: " + albumTrack[i].artists[0].name);
+	        console.log("Album Title: " + albumTrack[i].album.name);
+	        console.log("Spotify Link: " + albumTrack[i].preview_url);
+	        console.log("Track Title: " + albumTrack[i].name);
         }
 	});
 }
@@ -81,15 +86,24 @@ var movieCall = function() {
 		request(queryUrl, function(error, response, body){
 	
 	 	 if (!error && response.statusCode === 200){
+	 	 	console.log("\n-----------------------" + "\nMOVIE CALL" + "\n-----------------------");
 			// * Title of the movie.
+		   console.log("Title: " + JSON.parse(body).Title);
+
 		   // * Year the movie came out.
+		   console.log("Released: " + JSON.parse(body).Year);
 		   // * IMDB Rating of the movie.
+		   console.log("IMDB Rating: " + JSON.parse(body).Ratings[0].Value);
 		   // * Rotten Tomatoes Rating of the movie.
+		   console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
 		   // * Country where the movie was produced.
+		   console.log("Produced in: " + JSON.parse(body).Country);
 		   // * Language of the movie.
+		   console.log("Language: " + JSON.parse(body).Language);
 		   // * Plot of the movie.
+		   console.log("Plot: " + JSON.parse(body).Plot);
 		   // * Actors in the movie.
-	  	console.log("Released: " + JSON.parse(body).Year);
+		   console.log("Actors: " + JSON.parse(body).Actors);
 	 	 }
 		})
 }
