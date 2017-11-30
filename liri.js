@@ -124,6 +124,31 @@ var randomCall = function() {
 		// }
 		target = dataArr[1]; console.log(target);
 		// spotifyCall();
+		var spotify = new Spotify({
+	  id: spotifyClientID,
+	  secret: spotifyClientSecret
+	});
+	 
+	spotify.search({ type: 'track', query: target }, function(err, data) {
+	  if (err) {
+	    return
+	    	  }
+	 
+	// console.log(data); 
+        var albumTrack = data.tracks.items;
+		console.log("\n-----------------------" + "\nSPOTIFY CALL" + "\n-----------------------");
+				// console.log(albumTrack.length);
+
+        for (i=0; i < albumTrack.length; i++){
+
+        	console.log("\n-----------------------");
+	        console.log(i+1);
+	        console.log("Artist: " + albumTrack[i].artists[0].name);
+	        console.log("Album Title: " + albumTrack[i].album.name);
+	        console.log("Spotify Link: " + albumTrack[i].preview_url);
+	        console.log("Track Title: " + albumTrack[i].name);
+        }
+	});
 
 	})
 }
